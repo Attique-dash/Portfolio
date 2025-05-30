@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     const reply = data.choices?.[0]?.message?.content;
 
     return NextResponse.json({ message: reply });
-  } catch (err: any) {
+  } catch (err: Error | unknown) {
     console.error('Server Error:', err);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }

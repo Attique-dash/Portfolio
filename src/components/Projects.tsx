@@ -21,7 +21,7 @@ export default function Projects() {
     <section id="projects-section" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <span className="text-blue-500 font-semibold tracking-widest uppercase">What I've Built</span>
+          <span className="text-blue-500 font-semibold tracking-widest uppercase">What I&apos;ve Built</span>
           <h2 className="text-4xl font-extrabold mt-2 mb-2 text-gray-900">My Projects</h2>
           <p className="text-gray-500 max-w-xl mx-auto">
           Each project here represents a step in my journey as a developer — from learning the basics to building creative UI/UX experiences and solving real challenges through code.</p>

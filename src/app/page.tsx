@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Projects from '@/components/Projects';
@@ -8,7 +7,7 @@ import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import { FiMonitor, FiCode, FiLayers, FiImage } from 'react-icons/fi';
-import { MdMonetizationOn, MdOutlineDesignServices } from 'react-icons/md';
+import { MdOutlineDesignServices } from 'react-icons/md';
 import { FaMobileScreen } from 'react-icons/fa6';
 import { TbCloudCog } from 'react-icons/tb';
 import { IconType } from 'react-icons';
@@ -29,7 +28,6 @@ import { sendEmail } from '@/utils/emailService';
 import { FaDownload } from "react-icons/fa";
 import Chatbot from '@/components/Chatbot';
 import portfolio1 from '../../public/Images/PImage2.png'
-import { Router } from "next/router";
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -166,7 +164,7 @@ export default function Home() {
               <span className="text-blue-500 font-semibold tracking-widest uppercase">My Intro</span>
               <h2 className="text-3xl font-bold">About Me</h2>
               <p className="text-gray-500">
-                I'm a BS Computer Science student at Superior University with a passion for AI, web development, and creative UI/UX. I love building smart, user-friendly applications that solve real-world problems and help people in meaningful ways.
+                I&apos;m a BS Computer Science student at Superior University with a passion for AI, web development, and creative UI/UX. I love building smart, user-friendly applications that solve real-world problems and help people in meaningful ways.
               </p>
               <div className="flex gap-4">
                 <button

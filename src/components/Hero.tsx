@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from "next/link";
-import { FaDownload } from 'react-icons/fa';
 import protfolio from '../../public/Images/PImage.png'
 
 export default function Hero() {
