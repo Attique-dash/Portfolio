@@ -63,7 +63,7 @@ export default function Home() {
       } else {
         toast.error('Failed to send message. Please try again.');
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to send message. Please try again.');
     }
   };
@@ -266,7 +266,7 @@ export default function Home() {
       <motion.section id="services-section" className="py-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <span className="text-blue-500 font-semibold tracking-widest uppercase">I'm great at</span>
+            <span className="text-blue-500 font-semibold tracking-widest uppercase">I&apos;m great at</span>
             <h2 className="text-4xl font-extrabold mt-2 mb-2 text-white">We do awesome services for our clients</h2>
             <p className="text-gray-400 max-w-xl mx-auto">
             Delivering awesome services including
@@ -410,8 +410,8 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-3 md:grid-cols-3 gap-8">
             <div className="content-center">
-              <h3 className="text-xl font-bold mb-4 text-gray-400">Let's work together</h3>
-            <p>Have an idea or project in mind? I'd love to help you build it — from websites to smart AI tools.
+              <h3 className="text-xl font-bold mb-4 text-gray-400">Let&apos;s work together</h3>
+            <p>Have an idea or project in mind? I&apos;d love to help you build it — from websites to smart AI tools.
             </p>
             </div>
             <div className="text-center">
