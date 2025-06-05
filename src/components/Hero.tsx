@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import Link from "next/link";
-import protfolio from '../../public/Images/PImage.png'
+import protfolio from '../../public/Images/PImage2.png'
 
 export default function Hero() {
   return (
     <section id="home-section" className="relative min-h-screen flex items-center">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
+      <div className="container mt-[100px] md:mt-[0px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
         {/* Left side - Text content */}
-        <div className="w-full md:w-1/2 text-white">
+        <div className="w-full md:w-1/2 text-white text-center md:text-left">
           <span className="text-lg font-light">Hello! This is Attique</span>
           <h1 className="text-4xl md:text-6xl font-bold mt-4">
             Creative <span className="text-blue-500">UI/UX</span> & Software Developer
@@ -18,7 +18,7 @@ export default function Hero() {
             </button>
             <Link
               href="/cv"
-              className="inline-flex items-center gap-2 bg-white text-blue-500 font-semibold px-6 py-3 rounded hover:border-blue-500 transition-colors"
+              className="inline-flex customaus:mt-0 customaus:mr-0 mt-[20px] mr-[16px] items-center gap-2 bg-white text-blue-500 font-semibold px-6 py-3 rounded hover:border-blue-500 transition-colors"
             >
               View CV
             </Link>

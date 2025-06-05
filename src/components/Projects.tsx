@@ -18,30 +18,30 @@ const projects = [
 
 export default function Projects() {
   return (
-    <section id="projects-section" className="py-20 bg-gray-50">
+    <section id="projects-section" className="py-12 sm:py-16 lg:py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <span className="text-blue-500 font-semibold tracking-widest uppercase">What I&apos;ve Built</span>
-          <h2 className="text-4xl font-extrabold mt-2 mb-2 text-gray-900">My Projects</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">
+        <div className="text-center mb-8 sm:mb-12">
+          <span className="text-blue-500 font-semibold tracking-widest uppercase text-sm sm:text-base">What I&apos;ve Built</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-2 mb-3 text-gray-900">My Projects</h2>
+          <p className="text-gray-500 max-w-xl mx-auto text-sm sm:text-base px-4">
           Each project here represents a step in my journey as a developer — from learning the basics to building creative UI/UX experiences and solving real challenges through code.</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {projects.map((project) => (
             <Link href={project.link} key={project.id} target="_blank" rel="noopener noreferrer">
               <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl group cursor-pointer">
-                <div className="relative w-full h-64">
+                <div className="relative w-full h-48 sm:h-56 md:h-64">
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
                     className="object-contain p-2 border border-gray-200 rounded-t-2xl"
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
-                <div className="p-6 text-center">
-                  <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-500 transition-colors duration-300">{project.title}</h3>
-                  <span className="text-xs uppercase tracking-wider text-blue-500 font-semibold">{project.discription}</span>
+                <div className="p-4 sm:p-6 text-center">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-500 transition-colors duration-300">{project.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 line-clamp-3">{project.discription}</p>
                 </div>
               </div>
             </Link>
@@ -50,4 +50,4 @@ export default function Projects() {
       </div>
     </section>
   );
-} 
+}

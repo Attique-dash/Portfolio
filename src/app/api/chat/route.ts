@@ -21,7 +21,7 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'mistralai/mistral-7b-instruct',
+        model: 'deepseek/deepseek-r1-0528:free',
         messages: [
           {
             role: 'system',

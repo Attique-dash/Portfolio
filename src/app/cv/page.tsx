@@ -153,7 +153,7 @@ export default function CVPage() {
         <button
           onClick={handleDownloadCV}
           disabled={isLoading}
-          className={`flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto ${
+          className={`flex cursor-pointer items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto ${
             isLoading ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >

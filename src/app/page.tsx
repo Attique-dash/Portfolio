@@ -27,7 +27,7 @@ import { MdEmail } from "react-icons/md";
 import { sendEmail } from '@/utils/emailService';
 import { FaDownload } from "react-icons/fa";
 import Chatbot from '@/components/Chatbot';
-import portfolio1 from '../../public/Images/PImage2.png'
+import portfolio1 from '../../public/Images/PImage.png'
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -100,7 +100,6 @@ export default function Home() {
   };
 
   const handleDownloadCV = (e: React.MouseEvent) => {
-    router.push('/cv')
     e.preventDefault();
     const link = document.createElement('a');
     link.href = '/m.attique-cv.pdf';
@@ -112,26 +111,26 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <Navbar />
       <Hero />
       <Projects />
       <Chatbot />
       
       {/* Counter Section */}
-      <motion.section className="bg-gray-100 py-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+      <motion.section className="bg-gray-100 py-12 sm:py-16 lg:py-20 overflow-x-hidden" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               { value: 20, label: ' Plus Project Complete' },
               { value: 50, label: 'Plus Cups of coffee' },
               { value: 4, label: 'Years experienced' },
             ].map((item, idx) => (
-              <motion.div key={idx} className="bg-white p-6 rounded-lg shadow-md text-center" variants={idx % 2 === 0 ? fadeInLeft : fadeInRight}>
-                <div className="text-4xl font-bold text-blue-500 mb-2">
+              <motion.div key={idx} className="bg-white p-4 sm:p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition-transform duration-300" variants={idx % 2 === 0 ? fadeInLeft : fadeInRight}>
+                <div className="text-3xl sm:text-4xl font-bold text-blue-500 mb-2">
                   <CountUp end={item.value} duration={2} />
                 </div>
-                <div className="text-gray-600">{item.label}</div>
+                <div className="text-sm sm:text-base text-gray-600">{item.label}</div>
               </motion.div>
             ))}
           </div>
@@ -141,58 +140,61 @@ export default function Home() {
       {/* About Section */}
       <motion.section 
         id="about-section" 
-        className="scroll-mt-20" 
+        className="scroll-mt-20 py-12 sm:py-16 lg:py-20 overflow-x-hidden" 
         initial="hidden" 
         whileInView="visible" 
         viewport={{ once: true }} 
         variants={fadeInUp}
       >
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <motion.div className="relative" variants={fadeInLeft}>
-              <div className="relative w-full h-[500px] md:h-[600px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <motion.div className="relative order-2 lg:order-1 hidden lg:block" variants={fadeInLeft}>
+              <div className="relative w-full h-[400px] lg:h-[600px]">
                 <Image
                   src={portfolio1}
                   alt="About"
                   fill
                   className="object-contain"
                   priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
             </motion.div>
-            <motion.div className="space-y-6" variants={fadeInRight}>
-              <span className="text-blue-500 font-semibold tracking-widest uppercase">My Intro</span>
-              <h2 className="text-3xl font-bold">About Me</h2>
-              <p className="text-gray-500">
+            <motion.div className="space-y-4 sm:space-y-6 order-1 lg:order-2" variants={fadeInRight}>
+              <div className="text-center md:text-start">
+              <span className="text-blue-500 font-semibold tracking-widest uppercase text-sm sm:text-base">My Intro</span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">About Me</h2>
+              <p className="text-gray-500 text-sm sm:text-base">
                 I&apos;m a BS Computer Science student at Superior University with a passion for AI, web development, and creative UI/UX. I love building smart, user-friendly applications that solve real-world problems and help people in meaningful ways.
               </p>
-              <div className="flex gap-4">
+              </div>
+              <div className="flex gap-4 justify-center">
                 <button
                   onClick={handleDownloadCV}
-                  className="inline-flex items-center cursor-pointer gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center cursor-pointer gap-2 bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
                 >
-                  <FaDownload />
+                  <FaDownload className="text-sm sm:text-base" />
                   Download CV
                 </button>
               </div>
-              <ul className="space-y-2">
-                <li className="flex justify-between">
+              <ul className="space-y-2 text-sm sm:text-base ">
+                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
                   <span className="font-semibold">Name:</span>
                   <span className="text-blue-400">Muhammad Attique</span>
                 </li>
-                <li className="flex justify-between">
+                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
                   <span className="font-semibold">Date of birth:</span>
                   <span className="text-blue-400">June 17, 2004</span>
                 </li>
-                <li className="flex justify-between">
+                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
                   <span className="font-semibold">Address:</span>
                   <span className="text-blue-400">Education Town, Whadat Road Lahore, Pakistan</span>
                 </li>
-                <li className="flex justify-between">
+                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
                   <span className="font-semibold">Email:</span>
                   <span className="text-blue-400">attiqueshafeeq246@gmail.com</span>
                 </li>
-                <li className="flex justify-between">
+                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
                   <span className="font-semibold">Phone:</span>
                   <span className="text-blue-400">+92-3244771036</span>
                 </li>
@@ -206,20 +208,20 @@ export default function Home() {
       <motion.section
         ref={skillsRef}
         id="skills-section"
-        className="bg-gray-100 py-20"
+        className="bg-gray-100 py-12 sm:py-16 lg:py-20 overflow-x-hidden"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeInUp}
       >
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-blue-500 font-semibold tracking-widest uppercase">Skills</span>
-            <h2 className="text-4xl font-extrabold mt-2 mb-2 text-gray-900">My Skills</h2>
-            <p className="text-gray-500 max-w-xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <span className="text-blue-500 font-semibold tracking-widest uppercase text-sm sm:text-base">Skills</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold mt-2 mb-2 text-gray-900">My Skills</h2>
+            <p className="text-gray-500 max-w-xl mx-auto text-sm sm:text-base px-4">
             Skilled in building full-stack web applications with a focus on clean UI/UX, performance, and real-world functionality.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               { name: 'React/React Native', percent: 85 },
               { name: 'Next JS', percent: 89 },
@@ -263,16 +265,16 @@ export default function Home() {
       </motion.section>
 
       {/* Services Section */}
-      <motion.section id="services-section" className="py-20" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+      <motion.section id="services-section" className="py-12 sm:py-16 lg:py-20 overflow-x-hidden" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-blue-500 font-semibold tracking-widest uppercase">I&apos;m great at</span>
-            <h2 className="text-4xl font-extrabold mt-2 mb-2 text-white">We do awesome services for our clients</h2>
-            <p className="text-gray-400 max-w-xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <span className="text-blue-500 font-semibold tracking-widest uppercase text-sm sm:text-base">I&apos;m great at</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold mt-2 mb-2 text-white">We do awesome services for our clients</h2>
+            <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-base px-4">
             Delivering awesome services including
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {[
               { name: 'Web Design', desc: 'Crafting clean, modern, and visually engaging website layouts tailored to your brand.', icon: 'FiMonitor' },
               { name: 'Web Application', desc: 'Building interactive, scalable web apps that solve real-world problems efficiently.', icon: 'FiCode' },
