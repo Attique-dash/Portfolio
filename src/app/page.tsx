@@ -28,10 +28,8 @@ import { sendEmail } from '@/utils/emailService';
 import { FaDownload } from "react-icons/fa";
 import Chatbot from '@/components/Chatbot';
 import portfolio1 from '../../public/Images/PImage.png'
-import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
