@@ -10,8 +10,9 @@ export default function Hero() {
         <div className="w-full md:w-1/2 text-white text-center md:text-left">
           <span className="text-lg font-light">Hello! This is Attique</span>
           <h1 className="text-4xl md:text-6xl font-bold mt-4">
-            Creative <span className="text-blue-500">UI/UX</span> & Software Developer
+        Software <span className="text-blue-500">Developer</span> 
           </h1>
+          <p className='mt-4 text-lg font-light text-gray-300 text-center md:text-left'>I'm a BS Computer Science student at Superior University with a passion for AI, web development, and creative UI/UX. I love building smart, user-friendly applications that solve real-world problems and help people in meaningful ways.</p>
           <div className="mt-8 space-x-4">
             <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded transition-colors">
               Contact me

@@ -25,9 +25,7 @@ import { MdSubject } from "react-icons/md";
 import { FaMessage } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { sendEmail } from '@/utils/emailService';
-import { FaDownload } from "react-icons/fa";
 import Chatbot from '@/components/Chatbot';
-import portfolio1 from '../../public/Images/PImage.png'
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -97,15 +95,6 @@ export default function Home() {
     }
   };
 
-  const handleDownloadCV = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const link = document.createElement('a');
-    link.href = '/m.attique-cv.pdf';
-    link.download = 'm.attique-cv.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
 
   return (
@@ -116,7 +105,7 @@ export default function Home() {
       <Chatbot />
       
       {/* Counter Section */}
-      <motion.section className="bg-gray-100 py-12 sm:py-16 lg:py-20 overflow-x-hidden" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+      <motion.section className="bg-[#0a0a0a] py-12 sm:py-16 lg:py-20 overflow-x-hidden" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
@@ -131,73 +120,6 @@ export default function Home() {
                 <div className="text-sm sm:text-base text-gray-600">{item.label}</div>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </motion.section>
-
-      {/* About Section */}
-      <motion.section 
-        id="about-section" 
-        className="scroll-mt-20 py-12 sm:py-16 lg:py-20 overflow-x-hidden" 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true }} 
-        variants={fadeInUp}
-      >
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <motion.div className="relative order-2 lg:order-1 hidden lg:block" variants={fadeInLeft}>
-              <div className="relative w-full h-[400px] lg:h-[600px]">
-                <Image
-                  src={portfolio1}
-                  alt="About"
-                  fill
-                  className="object-contain"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
-            </motion.div>
-            <motion.div className="space-y-4 sm:space-y-6 order-1 lg:order-2" variants={fadeInRight}>
-              <div className="text-center md:text-start">
-              <span className="text-blue-500 font-semibold tracking-widest uppercase text-sm sm:text-base">My Intro</span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">About Me</h2>
-              <p className="text-gray-500 text-sm sm:text-base">
-                I&apos;m a BS Computer Science student at Superior University with a passion for AI, web development, and creative UI/UX. I love building smart, user-friendly applications that solve real-world problems and help people in meaningful ways.
-              </p>
-              </div>
-              <div className="flex gap-4 justify-center">
-                <button
-                  onClick={handleDownloadCV}
-                  className="inline-flex items-center cursor-pointer gap-2 bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
-                >
-                  <FaDownload className="text-sm sm:text-base" />
-                  Download CV
-                </button>
-              </div>
-              <ul className="space-y-2 text-sm sm:text-base ">
-                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                  <span className="font-semibold">Name:</span>
-                  <span className="text-blue-400">Muhammad Attique</span>
-                </li>
-                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                  <span className="font-semibold">Date of birth:</span>
-                  <span className="text-blue-400">June 17, 2004</span>
-                </li>
-                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                  <span className="font-semibold">Address:</span>
-                  <span className="text-blue-400">Education Town, Whadat Road Lahore, Pakistan</span>
-                </li>
-                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                  <span className="font-semibold">Email:</span>
-                  <span className="text-blue-400">attiqueshafeeq246@gmail.com</span>
-                </li>
-                <li className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                  <span className="font-semibold">Phone:</span>
-                  <span className="text-blue-400">+92-3244771036</span>
-                </li>
-              </ul>
-            </motion.div>
           </div>
         </div>
       </motion.section>
