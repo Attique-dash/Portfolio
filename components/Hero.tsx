@@ -26,7 +26,7 @@ export default function Hero() {
 
           {/* Buttons */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-            <button id='contact-section' className="bg-gray-500 hover:bg-gray-600 dark:bg-yellow-500 dark:hover:bg-yellow-600 text-white px-6 py-3 rounded-lg shadow-md transition-all duration-300 hover:scale-105">
+            <button className="bg-gray-500 hover:bg-gray-600 dark:bg-yellow-500 dark:hover:bg-yellow-600 text-white px-6 py-3 rounded-lg shadow-md transition-all duration-300 hover:scale-105">
               Contact me
             </button>
             <Link
