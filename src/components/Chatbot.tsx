@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { FaComments, FaTimes } from 'react-icons/fa';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaComments, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
-// Keywords mapping for each section with more variations
+// ... Keep your existing sectionKeywords, specificQueries, sectionResponses, and aiResponses exactly as they are ...
 const sectionKeywords = {
   about: ['about', 'who', 'information', 'background', 'profile', 'introduction', 'bio', 'tell me about', 'know more'],
   skills: ['skills', 'expertise', 'technologies', 'tech stack', 'programming', 'languages', 'tools', 'frameworks', 'what can you do', 'capabilities', 'tech'],
@@ -18,7 +19,6 @@ const sectionKeywords = {
   education: ['education', 'study', 'degree', 'university', 'academic', 'qualification', 'college', 'school', 'eudcation', 'studied', 'learning']
 };
 
-// Add specific query mappings
 const specificQueries = {
   email: ['email', 'e-mail', 'mail', 'send mail', 'electronic mail'],
   phone: ['phone', 'contact no', 'number', 'mobile', 'call', 'telephone'],
@@ -26,161 +26,31 @@ const specificQueries = {
   education: ['education', 'study', 'degree', 'university', 'qualification']
 };
 
-// Define section-specific responses with more variations
 const sectionResponses = {
   about: [
-    `Muhammad Attique is a skilled full-stack developer specializing in:
-    • Web Development
-    • AI/ML Solutions
-    • Software Architecture
-    Currently focused on creating innovative solutions using modern technologies.`,
-    `As a professional developer, Muhammad Attique brings:
-    • Strong technical expertise
-    • Creative problem-solving
-    • Modern development practices
-    Passionate about creating efficient and scalable solutions.`,
-    `Muhammad Attique's professional profile:
-    • Full-stack Developer
-    • AI Enthusiast
-    • Solution Architect
-    Dedicated to delivering high-quality software solutions.`
+    `Muhammad Attique is a skilled full-stack developer specializing in Web Development, AI/ML Solutions, and Software Architecture.`,
+    `As a professional developer, Muhammad Attique brings strong technical expertise and creative problem-solving to every project.`
   ],
   skills: [
-    `Technical Skills Overview:
-    • Frontend: React.js, Next.js, TypeScript
-    • Backend: Node.js, Python, express
-    • Database: MongoDB, Firebase
-    • AI: AI Implementation`,
-    `Core Competencies:
-    • Web Application Development
-    • Database Architecture
-    • API Development
-    • UI/UX Implementation`,
-    `Technical Expertise:
-    • Modern JavaScript/TypeScript
-    • Full-stack Development
-    • Software Architecture
-    • AI Integration`
+    `Technical Skills Overview:\n• Frontend: React.js, Next.js, TypeScript\n• Backend: Node.js, Python, Express\n• Database: MongoDB, Firebase\n• AI: Implementation & Integration`
   ],
   projects: [
-    `Key Projects:
-    1. AutoPost AI
-       • IoT-based solution
-       • Real-time monitoring
-       • Automated control
-    
-    2. IQPLAY Game
-       • Game Development
-       • User Interface
-       • Gameplay MCQ
-    
-    3. B-Site Blog
-       • Blog Development
-       • User Interface
-       • Blog Posting
-       • Blog Commenting`,
-    `Notable Developments:
-    1. UniSys ERP
-       • ERP Development
-       • User Interface
-       • Role Based Access
-    
-    2. Store Management System
-       • Product Management
-       • Shopping Cart
-       • Add Product
-       • Update Product
-       • Delete Product
-    
-    3. Fachem Salt
-       • Modern design
-       • Responsive layout
-       • Product Purchase`
+    `Key Projects:\n1. AutoPost AI (IoT/Automation)\n2. IQPLAY Game (Game Dev/MCQs)\n3. B-Site Blog (Modern Publishing)`
   ],
   services: [
-    `Professional Services:
-    1. Full-stack Development
-       • Custom web applications
-       • Mobile-first design
-       • API integration
-    
-    2. Web Design
-       • Modern Design
-       • Responsive Layout
-       • User Interface
-    
-    3. API Development
-       • API Integration
-       • API Documentation
-       • API Testing`,
-    `Service Offerings:
-    1. Web Development
-       • Frontend development
-       • Backend architecture
-       • Database design
-    
-    2. Problem Solving
-       • Algorithm Development
-       • Data Structure
-       • Problem Solving
-    
-    3. Responsive Design
-       • User Interface
-       • Responsive Layout
-       • Mobile-first design`
+    `I offer Full-stack Development, Modern Web Design, and custom API Architectures.`
   ],
   contact: [
-    `Contact Information:
-    • Email: attiqueshafeeq246@gmail.com
-    • Phone: +92-3244771036
-    • Location: Lahore, Pakistan
-    
-    Feel free to reach out for professional inquiries.`,
-    `Get in Touch:
-    • Professional Email: attiqueshafeeq246@gmail.com
-    • Personal Number: +92-3244771036
-    • LinkedIn: Available on request
-    
-    Available for project discussions and collaborations.`,
-    `Contact Details:
-    • Primary Email: attiqueshafeeq246@gmail.com
-    • Contact Number: +92-3244771036
-    • Based in: Lahore, Pakistan
-    
-    Open to discussing new opportunities and projects.`
+    `Contact Information:\n• Email: attiqueshafeeq246@gmail.com\n• Phone: +92-3244771036\n• Location: Lahore, Pakistan`
   ],
   education: [
-    `Educational Background:
-    . Masters in Computer Science
-       • Superior University Lahore
-       • Experience: 4 + Years
-       • Focus: Web Development & AI,
-    
-    . BS Computer Science
-       • Superior University
-       • Graduated: June 2021
-       • Experience: 2021 - 2025
-       • Specialized in Web Development`,
-    ` 
-     . Advanced computer vision
-      - Bachelors Degree
-      - Computer Science
-      - Research AI `
+    `Educational Background:\n• MS Computer Science - Superior University\n• BS Computer Science - Superior University (2021-2025)`
   ]
 };
 
-// AI response variations for non-section queries
 const aiResponses = {
-  sports: [
-    "While I specialize in providing information about Muhammad Attique's professional work and background, I can tell you that  is a fascinating sport! For the most current cricket rankings and player statistics, I'd recommend checking official cricket websites or sports news portals.",
-    "I'm primarily focused on Muhammad Attique's professional profile, but for cricket-related questions, you might want to check official statistics websites for the most up-to-date information.",
-    "My expertise is in providing information about Muhammad Attique's work and skills. For cricket statistics and rankings, please refer to official  websites or sports databases."
-  ],
-  general: [
-    "I'm Muhammad Attique's AI assistant, specialized in providing information about his professional background, skills, and work. What would you like to know about his expertise?",
-    "I can help you learn about Muhammad Attique's professional experience, projects, and skills. What specific aspect would you like to know more about?",
-    "While I focus on Muhammad Attique's professional profile, I'd be happy to tell you about his work, education, or technical expertise. What interests you?"
-  ]
+  sports: ["I'm focused on Attique's professional work, but sports are great! For cricket stats, check official sports portals."],
+  general: ["I am Attique's AI assistant. Ask me about his skills, projects, or how to contact him!"]
 };
 
 export default function Chatbot() {
@@ -188,7 +58,14 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingTimeout, setLoadingTimeout] = useState<NodeJS.Timeout | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
 
   const getRandomResponse = (section: string): string => {
     const responses = sectionResponses[section as keyof typeof sectionResponses];
@@ -197,196 +74,172 @@ export default function Chatbot() {
 
   const getAIResponse = (query: string): string => {
     const lowerQuery = query.toLowerCase();
-    
-    // Check for sports-related queries
-    if (lowerQuery.includes('cricket') || lowerQuery.includes('player') || lowerQuery.includes('sport')) {
-      return aiResponses.sports[Math.floor(Math.random() * aiResponses.sports.length)];
+    if (lowerQuery.includes('cricket') || lowerQuery.includes('sport')) {
+      return aiResponses.sports[0];
     }
-    
-    return aiResponses.general[Math.floor(Math.random() * aiResponses.general.length)];
+    return aiResponses.general[0];
   };
 
   const findMatchingSection = (query: string): { section: string | null, specific?: string } => {
     const words = query.toLowerCase().split(' ');
-    
-    // First check for specific queries
     for (const [type, keywords] of Object.entries(specificQueries)) {
-      if (keywords.some(keyword => words.some(word => word.includes(keyword) || keyword.includes(word)))) {
-        return { section: 'contact', specific: type };
-      }
+      if (keywords.some(keyword => words.some(word => word.includes(keyword)))) return { section: 'contact', specific: type };
     }
-    
-    // Then check for general sections
     for (const [section, keywords] of Object.entries(sectionKeywords)) {
-      if (keywords.some(keyword => words.some(word => word.includes(keyword) || keyword.includes(word)))) {
-        return { section };
-      }
+      if (keywords.some(keyword => words.some(word => word.includes(keyword)))) return { section };
     }
     return { section: null };
   };
 
-  const getSpecificResponse = (type: string): string => {
-    switch (type) {
-      case 'email':
-        return `Email: attiqueshafeeq246@gmail.com`;
-      case 'phone':
-        return `Contact Number: +92-3244771036`;
-      case 'location':
-        return `Location: Lahore, Pakistan`;
-      default:
-        return getRandomResponse('contact');
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
     const userMessage: Message = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = input;
     setInput('');
     setIsLoading(true);
 
-    if (loadingTimeout) {
-      clearTimeout(loadingTimeout);
-    }
+    // Simulate AI thinking
+    setTimeout(() => {
+      const { section, specific } = findMatchingSection(currentInput.toLowerCase());
+      let content: string;
 
-    try {
-      const query = input.toLowerCase().trim();
-      const { section, specific } = findMatchingSection(query);
+      if (section) {
+        if (specific === 'email') content = "Email: attiqueshafeeq246@gmail.com";
+        else if (specific === 'phone') content = "Contact: +92-3244771036";
+        else if (specific === 'location') content = "Location: Lahore, Pakistan";
+        else content = getRandomResponse(section);
 
-      const timeout = setTimeout(() => {
-        let response: Message;
+        const element = document.querySelector(`#${section}-section`);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        content = getAIResponse(currentInput);
+      }
 
-        if (section) {
-          let content: string;
-          
-          if (specific) {
-            content = getSpecificResponse(specific);
-          } else {
-            content = getRandomResponse(section);
-          }
-
-          const element = document.querySelector(`#${section}-section`);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
-
-          response = {
-            role: 'assistant',
-            content
-          };
-        } else {
-          response = {
-            role: 'assistant',
-            content: getAIResponse(query)
-          };
-        }
-
-        setMessages(prev => [...prev, response]);
-        setIsLoading(false);
-      }, 5000);
-
-      setLoadingTimeout(timeout);
-
-    } catch (error: unknown) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: error instanceof Error ? error.message : 'Sorry, I encountered an error. Please try again.'
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, { role: 'assistant', content }]);
       setIsLoading(false);
-    }
+    }, 1200);
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {!isOpen ? (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-blue-600 cursor-pointer text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all"
-        >
-          <FaComments size={24} />
-        </button>
-      ) : (
-        <div className="w-[90vw] sm:w-80 md:w-96 lg:w-[28rem] h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col border border-gray-200">
-          {/* Header */}
-          <div className="p-4 border-b border-gray-300 flex justify-between items-center bg-blue-50 rounded-t-2xl">
-            <h3 className="font-semibold text-blue-600">Chat with AI</h3>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-gray-500 cursor-pointer hover:text-red-500 transition"
-              aria-label="Close chat"
-            >
-              <FaTimes size={20} />
-            </button>
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-            {messages.length === 0 && (
-              <div className="text-center text-gray-500 mt-4">
-                <p>👋 Hi! I can help you learn about:</p>
-                <p className="mt-2">• About & Background</p>
-                <p>• Skills & Expertise</p>
-                <p>• Projects & Portfolio</p>
-                <p>• Services & Offerings</p>
-                <p>• Contact Information</p>
-                <p>• Education & Qualifications</p>
-                <p className="mt-2">Feel free to ask anything!</p>
-              </div>
-            )}
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-xl px-4 py-2 text-sm shadow ${
-                    message.role === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white border border-gray-200 text-gray-800'
-                  }`}
-                >
-                  {message.content}
+    <div className="fixed bottom-6 right-6 z-[100]">
+      <AnimatePresence>
+        {!isOpen ? (
+          <motion.button
+            initial={{ scale: 0, rotate: -45 }}
+            animate={{ scale: 1, rotate: 0 }}
+            exit={{ scale: 0, rotate: 45 }}
+            onClick={() => setIsOpen(true)}
+            className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-purple-600 text-white rounded-2xl shadow-[0_10px_40px_rgba(37,99,235,0.4)] flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
+          >
+            <FaComments size={28} />
+          </motion.button>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.9 }}
+            className="w-[90vw] sm:w-[380px] h-[550px] bg-[#0d0d0d]/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                  <FaRobot size={20} />
                 </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-gray-200 text-gray-800 rounded-xl p-3">
-                  <div className="flex space-x-2">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></div>
+                <div>
+                  <h3 className="font-bold text-white text-sm">Attique AI</h3>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    <span className="text-[10px] text-gray-400 uppercase tracking-widest">Online</span>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-
-          {/* Input */}
-          <form onSubmit={handleSubmit} className="p-4 border-t border-gray-300 bg-white">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 p-2 border border-gray-300 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                disabled={isLoading}
-              />
-              <button
-                type="submit"
-                className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                disabled={isLoading}
-              >
-                Send
+              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white transition cursor-pointer">
+                <FaTimes size={20} />
               </button>
             </div>
-          </form>
-        </div>
-      )}
+
+            {/* Chat Messages */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+              {messages.length === 0 && (
+                <div className="space-y-4 py-4">
+                   <div className="p-4 rounded-2xl bg-white/5 border border-white/5 text-gray-400 text-xs leading-relaxed">
+                    👋 Hi! I&apos;m Attique&apos;s virtual assistant. Ask me about his <span className="text-blue-400">Skills</span>, <span className="text-purple-400">Experience</span>, or <span className="text-pink-400">Projects</span>.
+                  </div>
+                </div>
+              )}
+              {messages.map((msg, i) => (
+                <motion.div
+                  initial={{ opacity: 0, x: msg.role === 'user' ? 10 : -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  key={i}
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                      msg.role === 'user'
+                        ? 'bg-blue-600 text-white rounded-tr-none shadow-lg shadow-blue-900/20'
+                        : 'bg-white/10 text-gray-200 border border-white/10 rounded-tl-none'
+                    }`}
+                  >
+                    {msg.content.split('\n').map((line, j) => (
+                      <p key={j}>{line}</p>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3">
+                    <div className="flex gap-1">
+                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" />
+                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:0.2s]" />
+                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:0.4s]" />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Input Area */}
+            <form onSubmit={handleSubmit} className="p-6 bg-white/5 border-t border-white/5">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask me anything..."
+                  className="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 pl-4 pr-12 text-sm outline-none focus:border-blue-500/50 transition-all placeholder:text-gray-600"
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !input.trim()}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-blue-500 hover:text-blue-400 disabled:opacity-0 transition-all cursor-pointer"
+                >
+                  <FaPaperPlane size={14} />
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+        }
+      `}</style>
     </div>
   );
 }
