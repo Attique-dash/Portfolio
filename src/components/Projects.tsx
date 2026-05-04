@@ -7,8 +7,6 @@ import { FiExternalLink, FiGithub } from 'react-icons/fi';
 import project1 from '../../public/Images/AI Project.png';
 import project2 from '../../public/Images/Game Project.png';
 import project3 from '../../public/Images/Erp Project.png';
-import project4 from '../../public/Images/Stock Project.jpg';
-import project5 from '../../public/Images/Salt Project.png';
 import project6 from '../../public/Images/Blog Project.png';
 
 const projects = [
@@ -16,8 +14,6 @@ const projects = [
   { id: 2, image: project2, title: 'IQ Play Game', description: 'A 2-player quiz challenge featuring 6 games across 3 difficulty levels with progress tracking and rewards.', link: 'http://iqplay-2baf-git-master-muhammad-attiques-projects.vercel.app', tags: ['Next.js', 'Stripe', 'Firebase'] },
   { id: 3, image: project3, title: 'UniSys ERP', description: 'Role-based management system for academic environments, handling tasks for teachers, CRs, and students.', link: 'https://uni-sys-muhammad-attiques-projects.vercel.app/', tags: ['React', 'Node.js', 'Firebase'] },
   { id: 4, image: project6, title: 'B-site Blog', description: 'User-driven publishing platform with trending posts discovery and category-based tag filtering.', link: 'https://bloging-website-frontend-krghv0e2l-muhammadumar248s-projects.vercel.app/', tags: ['Next.js', 'MongoDB', 'Tailwind'] },
-  { id: 5, image: project5, title: 'Faychem Salt', description: 'Global export platform for premium Pakistani salt solutions, tailored for industrial and culinary sectors.', link: 'https://faychem.vercel.app/', tags: ['Next.js', 'Firebase', 'Nodemailer'] },
-  { id: 6, image: project4, title: 'Stock Pro', description: 'Real-time stock tracking system allowing users to manage inventory quantities, pricing, and availability.', link: 'https://stock-management-system-psi.vercel.app/', tags: ['Javascript', 'MongoDB', 'CSS'] },
 ];
 
 export default function Projects() {
@@ -27,26 +23,31 @@ export default function Projects() {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-2xl">
-            <motion.span 
+            <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="text-blue-500 font-mono text-sm tracking-[0.3em] uppercase"
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              className="text-blue-500 font-mono text-sm tracking-[0.3em] uppercase will-change-transform"
             >
               Selected Work
             </motion.span>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-6xl font-bold mt-4 tracking-tighter"
+              viewport={{ once: true }}
+              transition={{ delay: 0.05, duration: 0.4 }}
+              className="text-4xl md:text-6xl font-bold mt-4 tracking-tighter will-change-transform"
             >
               Building Digital <br /> <span className="text-gray-500">Solutions.</span>
             </motion.h2>
           </div>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="text-gray-500 max-w-xs text-sm leading-relaxed"
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.4 }}
+            className="text-gray-500 max-w-xs text-sm leading-relaxed will-change-opacity"
           >
             A collection of projects spanning AI integration, ERP systems, and high-performance web applications.
           </motion.p>
@@ -57,11 +58,11 @@ export default function Projects() {
           {projects.map((project, idx) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              viewport={{ once: true }}
-              className="group relative"
+              transition={{ delay: Math.min(idx * 0.05, 0.15), duration: 0.4 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="group relative will-change-transform"
             >
               <Link href={project.link} target="_blank">
                 <div className="relative overflow-hidden rounded-[2rem] bg-white/[0.03] border border-white/10 transition-all duration-500 hover:border-blue-500/50 hover:bg-white/[0.06]">
@@ -111,10 +112,12 @@ export default function Projects() {
         </div>
 
         {/* View More Call to Action */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          className="mt-20 py-12 border-t border-white/5 flex flex-col items-center text-center"
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mt-20 py-12 border-t border-white/5 flex flex-col items-center text-center will-change-opacity"
         >
           <h3 className="text-xl text-gray-400 mb-6">Want to see more technical breakdowns?</h3>
           <Link 

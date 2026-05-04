@@ -131,8 +131,9 @@ export default function Chatbot() {
             initial={{ scale: 0, rotate: -45 }}
             animate={{ scale: 1, rotate: 0 }}
             exit={{ scale: 0, rotate: 45 }}
+            transition={{ duration: 0.3 }}
             onClick={() => setIsOpen(true)}
-            className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-purple-600 text-white rounded-2xl shadow-[0_10px_40px_rgba(37,99,235,0.4)] flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
+            className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-purple-600 text-white rounded-2xl shadow-[0_10px_40px_rgba(37,99,235,0.4)] flex items-center justify-center hover:scale-110 transition-transform cursor-pointer will-change-transform"
           >
             <FaComments size={28} />
           </motion.button>
@@ -141,7 +142,8 @@ export default function Chatbot() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="w-[90vw] sm:w-[380px] h-[550px] bg-[#0d0d0d]/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden"
+            transition={{ duration: 0.3 }}
+            className="w-[90vw] sm:w-[380px] h-[550px] bg-[#0d0d0d]/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden will-change-transform"
           >
             {/* Header */}
             <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
@@ -173,10 +175,11 @@ export default function Chatbot() {
               )}
               {messages.map((msg, i) => (
                 <motion.div
-                  initial={{ opacity: 0, x: msg.role === 'user' ? 10 : -10 }}
+                  initial={{ opacity: 0, x: msg.role === 'user' ? 8 : -8 }}
                   animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
                   key={i}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} will-change-transform`}
                 >
                   <div
                     className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
