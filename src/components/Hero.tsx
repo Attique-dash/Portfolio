@@ -59,7 +59,7 @@ export default function Hero() {
               </Link>
 
               <a
-                href="/m.attique-cv.pdf"
+                href="/M.Attique-CV.pdf"
                 download="Muhammad-Attique-CV.pdf"
                 className="group px-8 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold backdrop-blur-md hover:bg-white/10 transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
               >
