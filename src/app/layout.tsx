@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${poppins.className} antialiased text-gray-800 overflow-x-hidden`} suppressHydrationWarning>
+      <body className={`${poppins.className} antialiased bg-[#050505] text-white overflow-x-hidden`} suppressHydrationWarning>
         <main className="min-h-screen w-full">
           {children}
         </main>

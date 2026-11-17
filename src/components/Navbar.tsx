@@ -63,7 +63,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-2">
             <span className="text-2xl font-black tracking-tighter text-white">
-              M<span className="text-blue-500 group-hover:text-purple-500 transition-colors">.</span>ATTIQUE
+              M<span className="text-orange-500 group-hover:text-red-500 transition-colors">.</span>ATTIQUE
             </span>
           </Link>
 
@@ -75,22 +75,22 @@ export default function Navbar() {
                 href={`#${link.id}`}
                 onClick={(e) => handleScrollTo(e, link.id)}
                 className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 rounded-lg hover:bg-white/5 ${
-                  activeSection === link.id ? 'text-blue-400' : 'text-gray-400 hover:text-white'
+                  activeSection === link.id ? 'text-orange-400' : 'text-gray-400 hover:text-white'
                 }`}
               >
                 {link.name}
                 {activeSection === link.id && (
-                  <motion.div 
+                  <motion.div
                     layoutId="activeNav"
-                    className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-500 rounded-full"
+                    className="absolute bottom-0 left-4 right-4 h-0.5 bg-orange-500 rounded-full"
                   />
                 )}
               </a>
             ))}
-            <a 
-              href="#contact-section" 
+            <a
+              href="#contact-section"
               onClick={(e) => handleScrollTo(e, 'contact-section')}
-              className="ml-4 px-5 py-2 bg-white text-black text-sm font-bold rounded-xl hover:bg-blue-500 hover:text-white transition-all active:scale-95"
+              className="ml-4 px-5 py-2 bg-white text-black text-sm font-bold rounded-xl hover:bg-orange-500 hover:text-white transition-all active:scale-95"
             >
               Let&apos;s Talk
             </a>
@@ -122,7 +122,7 @@ export default function Navbar() {
                   href={`#${link.id}`}
                   onClick={(e) => handleScrollTo(e, link.id)}
                   className={`text-lg font-semibold p-2 rounded-xl transition-colors ${
-                    activeSection === link.id ? 'bg-blue-500/10 text-blue-400' : 'text-gray-400'
+                    activeSection === link.id ? 'bg-orange-500/10 text-orange-400' : 'text-gray-400'
                   }`}
                 >
                   {link.name}
