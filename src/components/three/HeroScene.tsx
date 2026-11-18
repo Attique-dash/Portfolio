@@ -9,7 +9,7 @@ function FloatingShapes() {
   const group = useRef<THREE.Group>(null);
   const target = useRef({ x: 0, y: 0 });
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (!group.current) return;
     target.current.x = state.pointer.x;
     target.current.y = state.pointer.y;
