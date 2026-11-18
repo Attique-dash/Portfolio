@@ -1,248 +1,161 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaComments, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa';
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FiMessageCircle, FiSend, FiX } from "react-icons/fi";
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
+type Message = { role: "user" | "assistant"; content: string };
+
+const suggestions = ["What does Attique do?", "Tell me about his projects", "How can I get in touch?"];
+
+function answerQuestion(query: string): { content: string; section?: string } {
+  const text = query.toLowerCase();
+  if (/\b(email|e-mail|phone|contact|reach|hire|message|location)\b/.test(text)) {
+    return {
+      content: "You can reach Muhammad at attiqueshafeeq246@gmail.com. He is based in Lahore, Pakistan. Use the contact form on this page to share a project brief.",
+      section: "contact-section",
+    };
+  }
+  if (/\b(project|work|portfolio|built|made|created)\b/.test(text)) {
+    return {
+      content: "Selected work includes AutoPost AI, an automated content tool; IQ Play, a multiplayer quiz experience; UniSys ERP, an academic management system; and B-site Blog, a modern publishing platform. Project images and detailed case studies can be added as they become available.",
+      section: "projects-section",
+    };
+  }
+  if (/\b(skill|stack|technology|technologies|tools|framework|code)\b/.test(text)) {
+    return {
+      content: "Attique works with React, Next.js, TypeScript, Node.js, MongoDB, Tailwind CSS, Python, Firebase, and REST APIs. His focus is building responsive, maintainable web products.",
+      section: "skills-section",
+    };
+  }
+  if (/\b(service|help|design|develop|build|website|app|application|ai)\b/.test(text)) {
+    return {
+      content: "He can help with responsive web experiences, full-stack products, product UI/UX, and practical AI integrations. Share what you have in mind through the contact form.",
+      section: "services-section",
+    };
+  }
+  if (/\b(about|who|attique|background)\b/.test(text)) {
+    return {
+      content: "Muhammad Attique is a full-stack developer who enjoys turning ideas into polished, responsive digital products. Explore the portfolio or get in touch to discuss a project.",
+      section: "about-section",
+    };
+  }
+  return {
+    content: "I can help with information about Attique, his projects, skills, services, and contact details. Try one of the suggested questions, or send a project inquiry using the contact form.",
+  };
 }
-
-// ... Keep your existing sectionKeywords, specificQueries, sectionResponses, and aiResponses exactly as they are ...
-const sectionKeywords = {
-  about: ['about', 'who', 'information', 'background', 'profile', 'introduction', 'bio', 'tell me about', 'know more'],
-  skills: ['skills', 'expertise', 'technologies', 'tech stack', 'programming', 'languages', 'tools', 'frameworks', 'what can you do', 'capabilities', 'tech'],
-  projects: ['projects', 'work', 'portfolio', 'applications', 'developed', 'created', 'built', 'made', 'showcase', 'development'],
-  services: ['services', 'offerings', 'provide', 'offer', 'help', 'assistance', 'solutions', 'service', 'servies', 'what you offer'],
-  contact: ['contact', 'reach', 'email', 'phone', 'connect', 'message', 'get in touch', 'contact info', 'number', 'social', 'e-mail', 'mail', 'contact no', 'mobile'],
-  education: ['education', 'study', 'degree', 'university', 'academic', 'qualification', 'college', 'school', 'eudcation', 'studied', 'learning']
-};
-
-const specificQueries = {
-  email: ['email', 'e-mail', 'mail', 'send mail', 'electronic mail'],
-  phone: ['phone', 'contact no', 'number', 'mobile', 'call', 'telephone'],
-  location: ['location', 'address', 'where', 'place', 'city'],
-  education: ['education', 'study', 'degree', 'university', 'qualification']
-};
-
-const sectionResponses = {
-  about: [
-    `Muhammad Attique is a skilled full-stack developer specializing in Web Development, AI/ML Solutions, and Software Architecture.`,
-    `As a professional developer, Muhammad Attique brings strong technical expertise and creative problem-solving to every project.`
-  ],
-  skills: [
-    `Technical Skills Overview:\n• Frontend: React.js, Next.js, TypeScript\n• Backend: Node.js, Python, Express\n• Database: MongoDB, Firebase\n• AI: Implementation & Integration`
-  ],
-  projects: [
-    `Key Projects:\n1. AutoPost AI (IoT/Automation)\n2. IQPLAY Game (Game Dev/MCQs)\n3. B-Site Blog (Modern Publishing)`
-  ],
-  services: [
-    `I offer Full-stack Development, Modern Web Design, and custom API Architectures.`
-  ],
-  contact: [
-    `Contact Information:\n• Email: attiqueshafeeq246@gmail.com\n• Phone: +92-3244771036\n• Location: Lahore, Pakistan`
-  ],
-  education: [
-    `Educational Background:\n• MS Computer Science - Superior University\n• BS Computer Science - Superior University (2021-2025)`
-  ]
-};
-
-const aiResponses = {
-  sports: ["I'm focused on Attique's professional work, but sports are great! For cricket stats, check official sports portals."],
-  general: ["I am Attique's AI assistant. Ask me about his skills, projects, or how to contact him!"]
-};
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages, isLoading]);
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messages, isLoading, isOpen]);
 
-  const getRandomResponse = (section: string): string => {
-    const responses = sectionResponses[section as keyof typeof sectionResponses];
-    return responses[Math.floor(Math.random() * responses.length)];
-  };
-
-  const getAIResponse = (query: string): string => {
-    const lowerQuery = query.toLowerCase();
-    if (lowerQuery.includes('cricket') || lowerQuery.includes('sport')) {
-      return aiResponses.sports[0];
-    }
-    return aiResponses.general[0];
-  };
-
-  const findMatchingSection = (query: string): { section: string | null, specific?: string } => {
-    const words = query.toLowerCase().split(' ');
-    for (const [type, keywords] of Object.entries(specificQueries)) {
-      if (keywords.some(keyword => words.some(word => word.includes(keyword)))) return { section: 'contact', specific: type };
-    }
-    for (const [section, keywords] of Object.entries(sectionKeywords)) {
-      if (keywords.some(keyword => words.some(word => word.includes(keyword)))) return { section };
-    }
-    return { section: null };
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMessage: Message = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
-    const currentInput = input;
-    setInput('');
+  const sendMessage = (value: string) => {
+    const question = value.trim();
+    if (!question || isLoading) return;
+    setMessages((current) => [...current, { role: "user", content: question }]);
+    setInput("");
     setIsLoading(true);
 
-    // Simulate AI thinking
-    setTimeout(() => {
-      const { section, specific } = findMatchingSection(currentInput.toLowerCase());
-      let content: string;
-
-      if (section) {
-        if (specific === 'email') content = "Email: attiqueshafeeq246@gmail.com";
-        else if (specific === 'phone') content = "Contact: +92-3244771036";
-        else if (specific === 'location') content = "Location: Lahore, Pakistan";
-        else content = getRandomResponse(section);
-
-        const element = document.querySelector(`#${section}-section`);
-        if (element) element.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        content = getAIResponse(currentInput);
-      }
-
-      setMessages(prev => [...prev, { role: 'assistant', content }]);
+    window.setTimeout(() => {
+      const response = answerQuestion(question);
+      setMessages((current) => [...current, { role: "assistant", content: response.content }]);
       setIsLoading(false);
-    }, 1200);
+      if (response.section) {
+        document.getElementById(response.section)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 350);
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    sendMessage(input);
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100]">
-      <AnimatePresence>
-        {!isOpen ? (
-          <motion.button
-            initial={{ scale: 0, rotate: -45 }}
-            animate={{ scale: 1, rotate: 0 }}
-            exit={{ scale: 0, rotate: 45 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => setIsOpen(true)}
-            className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-purple-600 text-white rounded-2xl shadow-[0_10px_40px_rgba(37,99,235,0.4)] flex items-center justify-center hover:scale-110 transition-transform cursor-pointer will-change-transform"
-          >
-            <FaComments size={28} />
-          </motion.button>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+    <div className="fixed bottom-4 right-4 z-[110] sm:bottom-6 sm:right-6">
+      <AnimatePresence mode="wait">
+        {isOpen ? (
+          <motion.section
+            key="chat-panel"
+            initial={{ opacity: 0, y: 14, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-            className="w-[90vw] sm:w-[380px] h-[550px] bg-[#0d0d0d]/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden will-change-transform"
+            exit={{ opacity: 0, y: 10, scale: 0.97 }}
+            transition={{ duration: 0.2 }}
+            aria-label="Portfolio assistant"
+            className="flex h-[min(34rem,calc(100dvh-6rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#101014] shadow-[0_24px_90px_rgba(0,0,0,0.6)]"
           >
-            {/* Header */}
-            <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+            <header className="flex items-center justify-between border-b border-white/[0.08] bg-white/[0.025] px-5 py-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
-                  <FaRobot size={20} />
-                </div>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-orange-200/15 bg-orange-300/[0.08] text-orange-200"><FiMessageCircle size={18} aria-hidden="true" /></span>
                 <div>
-                  <h3 className="font-bold text-white text-sm">Attique AI</h3>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-[10px] text-gray-400 uppercase tracking-widest">Online</span>
-                  </div>
+                  <h2 className="text-sm font-semibold text-white">Portfolio assistant</h2>
+                  <p className="mt-0.5 text-[11px] text-white/45">Ask about projects, skills, or contact</p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white transition cursor-pointer">
-                <FaTimes size={20} />
-              </button>
-            </div>
+              <button type="button" onClick={() => setIsOpen(false)} aria-label="Close chat" className="rounded-lg p-2 text-white/50 transition hover:bg-white/[0.06] hover:text-white"><FiX size={19} /></button>
+            </header>
 
-            {/* Chat Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+            <div ref={scrollRef} aria-live="polite" className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-5">
               {messages.length === 0 && (
-                <div className="space-y-4 py-4">
-                   <div className="p-4 rounded-2xl bg-white/5 border border-white/5 text-gray-400 text-xs leading-relaxed">
-                    👋 Hi! I&apos;m Attique&apos;s virtual assistant. Ask me about his <span className="text-blue-400">Skills</span>, <span className="text-purple-400">Experience</span>, or <span className="text-pink-400">Projects</span>.
+                <div className="space-y-4">
+                  <div className="rounded-2xl rounded-tl-md border border-white/[0.07] bg-white/[0.04] p-4 text-sm leading-6 text-white/70">
+                    Hi! I can help you learn more about Muhammad Attique&apos;s work. What would you like to know?
                   </div>
-                </div>
-              )}
-              {messages.map((msg, i) => (
-                <motion.div
-                  initial={{ opacity: 0, x: msg.role === 'user' ? 8 : -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2 }}
-                  key={i}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} will-change-transform`}
-                >
-                  <div
-                    className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'bg-blue-600 text-white rounded-tr-none shadow-lg shadow-blue-900/20'
-                        : 'bg-white/10 text-gray-200 border border-white/10 rounded-tl-none'
-                    }`}
-                  >
-                    {msg.content.split('\n').map((line, j) => (
-                      <p key={j}>{line}</p>
+                  <div className="flex flex-col items-start gap-2">
+                    {suggestions.map((suggestion) => (
+                      <button key={suggestion} type="button" onClick={() => sendMessage(suggestion)} className="max-w-full rounded-full border border-white/10 px-3 py-2 text-left text-xs text-white/65 transition hover:border-orange-200/30 hover:text-orange-100">
+                        {suggestion}
+                      </button>
                     ))}
                   </div>
-                </motion.div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3">
-                    <div className="flex gap-1">
-                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" />
-                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:0.2s]" />
-                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:0.4s]" />
-                    </div>
-                  </div>
                 </div>
               )}
+              {messages.map((message, index) => (
+                <div key={`${index}-${message.role}`} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <p className={`max-w-[88%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "rounded-br-md bg-orange-300 text-[#17100a]" : "rounded-bl-md border border-white/[0.07] bg-white/[0.04] text-white/75"}`}>
+                    {message.content}
+                  </p>
+                </div>
+              ))}
+              {isLoading && <p className="text-xs text-white/40" role="status">Putting together an answer…</p>}
             </div>
 
-            {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-6 bg-white/5 border-t border-white/5">
-              <div className="relative">
+            <form onSubmit={handleSubmit} className="border-t border-white/[0.08] p-3 sm:p-4">
+              <label htmlFor="portfolio-chat-input" className="sr-only">Ask a question</label>
+              <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] p-1.5 focus-within:border-orange-200/40">
                 <input
-                  type="text"
+                  id="portfolio-chat-input"
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything..."
-                  className="w-full bg-white/5 border border-white/10 text-white rounded-xl py-3 pl-4 pr-12 text-sm outline-none focus:border-blue-500/50 transition-all placeholder:text-gray-600"
-                  disabled={isLoading}
+                  onChange={(event) => setInput(event.target.value)}
+                  placeholder="Ask a question..."
+                  className="min-w-0 flex-1 bg-transparent px-2 py-2 text-sm text-white outline-none placeholder:text-white/35"
                 />
-                <button
-                  type="submit"
-                  disabled={isLoading || !input.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-blue-500 hover:text-blue-400 disabled:opacity-0 transition-all cursor-pointer"
-                >
-                  <FaPaperPlane size={14} />
-                </button>
+                <button type="submit" disabled={isLoading || !input.trim()} aria-label="Send message" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-300 text-[#17100a] transition hover:bg-orange-200 disabled:cursor-not-allowed disabled:opacity-40"><FiSend size={15} /></button>
               </div>
             </form>
-          </motion.div>
+          </motion.section>
+        ) : (
+          <motion.button
+            key="chat-launcher"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            type="button"
+            onClick={() => setIsOpen(true)}
+            aria-label="Open portfolio assistant"
+            className="flex h-14 w-14 items-center justify-center rounded-2xl border border-orange-100/20 bg-orange-300 text-[#17100a] shadow-[0_10px_38px_rgba(251,146,60,0.22)] transition hover:-translate-y-0.5 hover:bg-orange-200"
+          >
+            <FiMessageCircle size={23} />
+          </motion.button>
         )}
       </AnimatePresence>
-
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 10px;
-        }
-      `}</style>
     </div>
   );
 }
